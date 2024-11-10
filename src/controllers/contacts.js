@@ -1,16 +1,23 @@
 import createHttpError from 'http-errors';
-
 import * as contactServices from '../services/contacts.js';
+import { parsePaginationParams } from "../utils/parsePaginationParams.js";
+import { parseSortParams } from "../utils/parseSortParams.js";
+import { parseContactFilterParams } from "../utils/parseContactFilterParams.js";
+import { sortByList } from "../db/models/Contact.js";
 
 export const getContactsController = async (req, res) => {
-  const data = await contactServices.getContacts();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
+  const filter = parseContactFilterParams(req.query);
+  const data = await contactServices.getContacts({ page, perPage, sortBy, sortOrder, filter });
 
   res.json({
     status: 200,
-    message: 'Successfully find contacts',
+    message: 'Contacts retrieved successfully',
     data,
   });
 };
+
 
 export const getContactByIdController = async (req, res) => {
   const { id } = req.params;
@@ -22,7 +29,7 @@ export const getContactByIdController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: `Contact successfully find`,
+    message: `Contact retrieved successfully`,
     data,
   });
 };
@@ -32,7 +39,7 @@ export const addContactController = async (req, res) => {
 
   res.status(201).json({
     status: 201,
-    message: 'Contact successfullt added',
+    message: 'Contact successfully added',
     data,
   });
 };
