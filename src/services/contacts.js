@@ -6,6 +6,10 @@ export const getContacts = async ({ page = 1, perPage = 10, sortBy = "_id", sort
 
   const query = ContactCollection.find(filter).skip(skip).limit(perPage).sort({ [sortBy]: sortOrder });
 
+  if(filter.userId) {
+    query.where("userId").equals(filter.userId);
+}
+
   const data = await query;
 
   const totalItems = await ContactCollection.find(filter).countDocuments();
