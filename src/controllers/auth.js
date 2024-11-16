@@ -16,13 +16,15 @@ const setupSession = (res, session)=> {
     });
 };
 
-export const registerController = async(req, res)=> {
+export const registerController = async(req, res) => {
     const data = await authServices.register(req.body);
+
+    const { password, ...userWithoutPassword } = data;
 
     res.status(201).json({
         status: 201,
-        message: "Successfully registerd user",
-        data,
+        message: "Successfully registered user",
+        data: userWithoutPassword,
     });
 };
 
