@@ -21,10 +21,10 @@ export const getContactsController = async (req, res) => {
   });
 };
 
-
 export const getContactByIdController = async (req, res) => {
   const { id } = req.params;
-  const data = await contactServices.getContactById(id);
+  const { _id: userId } = req.user;
+  const data = await contactServices.getContactById(id, userId);
 
   if (!data) {
     throw createHttpError(404, `Contact with id=${id} not found`);
@@ -50,34 +50,41 @@ export const addContactController = async (req, res) => {
 
 export const upsertContactController = async (req, res) => {
   const { id: _id } = req.params;
+  const { _id: userId } = req.user;
 
-  const result = await contactServices.updateContact({
-    _id,
-    payload: req.body,
-    options: {
-      upsert: true,
-    },
-  });
+  const existingContact = await contactServices.getContactById(_id, userId);
+  if (existingContact) {
+    
+    const result = await contactServices.updateContact({
+      _id,
+      payload: req.body,
+      options: { upsert: true },
+    });
+    const status = result.isNew ? 201 : 200;
 
-  const status = result.isNew ? 201 : 200;
-
-  res.status(status).json({
-    status,
-    message: 'Contact upserted successfully',
-    data: result.data,
-  });
+    return res.status(status).json({
+      status,
+      message: 'Contact upserted successfully',
+      data: result.data,
+    });
+  } else {
+    
+    throw createHttpError(404, `Contact with id=${_id} not found or not accessible`);
+  }
 };
 
 export const patchContactController = async (req, res) => {
   const { id: _id } = req.params;
+  const { _id: userId } = req.user;
 
   const result = await contactServices.updateContact({
     _id,
+    userId, 
     payload: req.body,
   });
 
   if (!result) {
-    throw createHttpError(404, `Contact with id=${_id} not found`);
+    throw createHttpError(404, `Contact with id=${_id} not found or not accessible`);
   }
 
   res.json({
@@ -89,11 +96,12 @@ export const patchContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res) => {
   const { id: _id } = req.params;
+  const { _id: userId } = req.user;
 
-  const data = await contactServices.deleteContact({ _id });
+  const data = await contactServices.deleteContact(_id, userId);
 
   if (!data) {
-    throw createHttpError(404, `Contact with id=${_id} not found`);
+    throw createHttpError(404, `Contact with id=${_id} not found or not accessible`);
   }
 
   res.status(204).send();
