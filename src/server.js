@@ -21,7 +21,7 @@ export const startServer = () => {
   app.use(cookieParser());
   app.use(express.static("uploads"));
 
-  // app.use(logger);
+ app.use(logger);
 
   app.use("/auth", authRouter);
   app.use('/contacts', contactsRouter);
