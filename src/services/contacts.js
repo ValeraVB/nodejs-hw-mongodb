@@ -55,3 +55,19 @@ export const updateContact = async ({ _id, userId, payload, options = {} }) => {
 export const deleteContact = (id, userId) => {
   return ContactCollection.findOneAndDelete({ _id: id, userId });
 };
+
+export const upsertContact = async ({ _id, payload, userId }) => {
+  try {
+    
+    const contact = await ContactCollection.findOneAndUpdate(
+      { _id, userId },  
+      { ...payload },   
+      { upsert: true, new: true }  
+    );
+
+    return { data: contact };  
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error in upserting contact');
+  }
+};
