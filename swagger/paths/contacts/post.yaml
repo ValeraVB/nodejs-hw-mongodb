@@ -1,11 +1,14 @@
+#/swagger/paths/contacts/post.yaml
+
 tags:
   - Contacts
-summary: Create contact
+summary: Create a contact
 operationId: createContact
-description: 'Create a contact with payload'
+description: 'Create a new contact with the provided data'
 security:
   - bearerAuth: []
 requestBody:
+  required: true
   content:
     multipart/form-data:
       schema:
@@ -16,41 +19,55 @@ requestBody:
           - contactType
         properties:
           name:
-            description: "Contacts name"
             type: string
-            example: 'John Doe'
+            example: 'Jane Doe'
           phoneNumber:
-            description: "Contacts phone number"
             type: string
-            example: '+38111111111'
+            example: '+1234567890'
+          email:
+            type: string
+            format: email
+            example: 'jane.doe@example.com'
+          isFavourite:
+            type: boolean
+            example: true
           contactType:
-            description: "Contacts type"
             type: string
-            enum: ['home', 'personal']
+            enum: ['personal', 'work']
+            example: 'personal'
           photo:
-            description: "Contacts photo"
+            description: "Contact's photo (binary)"
             type: string
-            example: binary
+            format: binary
 responses:
   '201':
-    description: Creates a contact
+    description: Successfully created the contact
     content:
       application/json:
         schema:
           type: object
           required:
             - status
-            - message
             - data
           properties:
             status:
               type: integer
               example: 201
-            message:
-              type: string
-              example: Successfully created a contact!
             data:
               type: object
               $ref: '../../components/schemas/contact.yaml'
+  '400':
+    description: Validation error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Validation error
   '401':
     $ref: '../../components/responses/401.yaml'
