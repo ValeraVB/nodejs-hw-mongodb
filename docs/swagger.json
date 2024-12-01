@@ -14,7 +14,7 @@
       "url": "http://localhost:3000"
     },
     {
-      "url": "https://example.com/api/v1"
+      "url": "https://nodejs-hw-mongodb-0h5i.onrender.com"
     }
   ],
   "tags": [
@@ -343,7 +343,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found contact!"
+                      "example": "Contact patched successfully!"
                     },
                     "data": {
                       "type": "object",
@@ -401,11 +401,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found contact!"
-                    },
-                    "data": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/contact"
+                      "example": "Contact with id=${_id} not found or not accessible!"
                     }
                   }
                 }
