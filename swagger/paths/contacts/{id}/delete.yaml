@@ -2,7 +2,7 @@ tags:
   - Contacts
 summary: Delete contact by id
 operationId: deleteContact
-description: 'Delete contact by id'
+description: 'Delete a contact by its unique ID.'
 security:
   - bearerAuth: []
 parameters:
@@ -12,9 +12,14 @@ parameters:
     schema:
       type: string
       example: '65ca67e7ae7f10c88b598384'
+    description: 'Unique identifier of the contact to delete'
 responses:
-  '200':
-    description: 'Delete contact by id'
+  '204':
+    description: Successfully deleted the contact
+  '401':
+    $ref: '../../../components/responses/401.yaml'
+  '404':
+    description: Contact not found
     content:
       application/json:
         schema:
@@ -22,13 +27,10 @@ responses:
           required:
             - status
             - message
-            - data
           properties:
             status:
               type: integer
-              example: 200
+              example: 404
             message:
               type: string
-              example: Contact with id=${_id} not found or not accessible!
-  '401':
-    $ref: '../../../components/responses/401.yaml'
+              example: Contact not found

@@ -13,3 +13,4 @@ content:
         message:
           type: string
           example: UnauthorizedError
+
