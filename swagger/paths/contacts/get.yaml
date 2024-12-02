@@ -10,19 +10,24 @@ parameters:
     name: page
     schema:
       type: integer
-      example: 1
-    description: 'Page number for pagination'
+    example: 1
   - in: query
-    name: limit
+    name: perPage
     schema:
       type: integer
       example: 10
-    description: 'Number of contacts per page'
   - in: query
-    name: isFavourite
+    name: sortBy
     schema:
-      type: boolean
-    description: 'Filter contacts by favourite status'
+      type: string
+      example: 'name'
+    description: "All contacts's fields can be mentioned. Default value - _id"
+  - in: query
+    name: sortOrder
+    schema:
+      type: string
+      enum: ['asc', 'desc']
+      example: 'asc'
 responses:
   '200':
     description: Successfully retrieved the list of contacts
