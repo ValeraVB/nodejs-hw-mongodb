@@ -38,7 +38,7 @@ parameters:
     example: true
     description: 'Filter contacts by favourite status.'
   - in: query
-    name: contactType
+    name: type
     schema:
       type: string
       enum: ['home', 'personal']
