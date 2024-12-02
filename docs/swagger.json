@@ -48,24 +48,26 @@
             "schema": {
               "type": "integer"
             },
-            "example": 1
+            "example": 1,
+            "description": "The page number to retrieve (default: 1)."
           },
           {
             "in": "query",
             "name": "perPage",
             "schema": {
-              "type": "integer",
-              "example": 10
-            }
+              "type": "integer"
+            },
+            "example": 10,
+            "description": "The number of contacts per page (default: 10)."
           },
           {
             "in": "query",
             "name": "sortBy",
             "schema": {
-              "type": "string",
-              "example": "name"
+              "type": "string"
             },
-            "description": "All contacts's fields can be mentioned. Default value - _id"
+            "example": "name",
+            "description": "Field to sort by. All contact fields are supported. Default is '_id'."
           },
           {
             "in": "query",
@@ -75,9 +77,32 @@
               "enum": [
                 "asc",
                 "desc"
-              ],
-              "example": "asc"
-            }
+              ]
+            },
+            "example": "asc",
+            "description": "Sort order: \"asc\" for ascending or \"desc\" for descending (default: \"asc\")."
+          },
+          {
+            "in": "query",
+            "name": "isFavourite",
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true,
+            "description": "Filter contacts by favourite status."
+          },
+          {
+            "in": "query",
+            "name": "contactType",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "home",
+                "personal"
+              ]
+            },
+            "example": "home",
+            "description": "Filter contacts by type."
           }
         ],
         "responses": {
@@ -125,23 +150,23 @@
                         },
                         "perPage": {
                           "type": "number",
-                          "example": 4
+                          "example": 10
                         },
                         "totalItems": {
                           "type": "number",
-                          "example": 4
+                          "example": 100
                         },
                         "totalPages": {
                           "type": "number",
-                          "example": 4
+                          "example": 10
                         },
                         "hasNextPage": {
                           "type": "boolean",
-                          "example": false
+                          "example": true
                         },
                         "hasPreviousPage": {
                           "type": "boolean",
-                          "example": true
+                          "example": false
                         }
                       }
                     }
